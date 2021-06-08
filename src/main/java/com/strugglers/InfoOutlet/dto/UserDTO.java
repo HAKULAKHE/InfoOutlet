@@ -1,47 +1,29 @@
-package com.strugglers.InfoOutlet.Model;
+package com.strugglers.InfoOutlet.dto;
 
-import com.strugglers.InfoOutlet.dto.UserDTO;
+import com.strugglers.InfoOutlet.Model.User;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 
-@Entity     //Maps objects with database
-@Table(name = "user")       //Specify which table to map it with
-public class User
-{
-    @Id     //For primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY)     //user id is auto incremented sequentially not randomly like in AUTO
+public class UserDTO {      //Got values from Model.User
     private int id;
     private String username;
     private String password;
     private String email;
     private String firstName;
-    @Column(name = "my_last_name")      //Just like AS in the mysql queires
     private String lastName;
     private String address;
 
-    public User()
-    {
+    public UserDTO() {      //Used in Postman
     }
 
-    public User(int id, String username, String password, String email, String firstName, String lastName, String address) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-    }
-
-    public User(UserDTO userDTO)
-    {
-        this.id = userDTO.getId();
-        this.username = userDTO.getUsername();
-        this.address = userDTO.getAddress();
-        this.email = userDTO.getEmail();
-        this.firstName = userDTO.getFirstName();
-        this.lastName = userDTO.getLastName();
-        this.password = userDTO.getPassword();
+    public UserDTO(User user){      //Use Alt + enter if User comes in red as the IDE hasn't recognised it as Model.User
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.address = user.getAddress();
+        this.email = user.getEmail();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.password = user.getPassword();
     }
 
     public int getId() {
