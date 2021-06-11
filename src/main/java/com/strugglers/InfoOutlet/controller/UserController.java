@@ -4,10 +4,10 @@ import com.strugglers.InfoOutlet.Model.User;
 import com.strugglers.InfoOutlet.dto.UserDTO;
 import com.strugglers.InfoOutlet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+//Controller is used to connect with the repository which contains data in database and to create APIs.
 
 //We need to add @Service, @RestController, @Repository or @Configuration to use @Autowired
 @RestController
@@ -20,5 +20,11 @@ public class UserController {
     public UserDTO addUser(@RequestBody UserDTO userDTO)
     {
         return userService.addUser(userDTO);
+    }
+
+    @GetMapping     //Retrieving data in database using GET method in POSTMAN
+    public List<UserDTO> getAll()
+    {
+        return userService.findAll();
     }
 }

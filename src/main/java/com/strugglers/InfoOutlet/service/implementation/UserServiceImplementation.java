@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 //Database is connected through repository and UserDto
 
@@ -33,7 +34,14 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public List<UserDTO> findAll() {
-        return null;
+        List<User> users = userRepository.findAll();        //Retrieving values from database and putting it in users in list form.
+        //users.stream().map(UserDTO::new).collect(Collectors.toList());        //This is equivalent to for each given below.
+        List<UserDTO> userDTOs = new ArrayList<>();     //Defining a new list to store data that was retrieved from database.
+        for (User user : users) {
+            UserDTO userDTO = new UserDTO(user);        //copy user to userDTO
+            userDTOs.add(userDTO);      //adding each userDTO to list of userDTOs
+        }
+        return userDTOs;        //We did all of the above to convert the list of data in database which was in User form into UserDTO form.
     }
 
     @Override

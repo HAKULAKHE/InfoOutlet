@@ -3,7 +3,7 @@ package com.strugglers.InfoOutlet.Model;
 import com.strugglers.InfoOutlet.dto.UserDTO;
 
 import javax.persistence.*;
-
+//Is mapped with database
 @Entity     //Maps objects with database
 @Table(name = "user")       //Specify which table to map it with
 public class User
@@ -33,7 +33,7 @@ public class User
         this.address = address;
     }
 
-    public User(UserDTO userDTO)
+    public User(UserDTO userDTO)        //if this is empty, the Values in Postman will be null
     {
         this.id = userDTO.getId();
         this.username = userDTO.getUsername();
@@ -43,7 +43,7 @@ public class User
         this.lastName = userDTO.getLastName();
         this.password = userDTO.getPassword();
     }
-
+    //alt + Fn + insert to set getter, setter or constructor.
     public int getId() {
         return id;
     }
