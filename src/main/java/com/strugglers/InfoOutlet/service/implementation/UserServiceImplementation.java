@@ -59,11 +59,18 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDTO updateUser(UserDTO userDTO) {
-        return null;
+        findByID(userDTO.getId());      //Here, we added user defined method findByID() because if ID was not checked and we update when specified id doesn't exist or was deleted it will create a new entry in the next auto_increment id number and not the specified id as id is set according to the auto_increment.
+        //here, userDTO is returned if ID not found and as userDTO is not of User type it is not updated.
+        User user = new User(userDTO);      //save userDTO into user form
+        User updatedUser = userRepository.save(user);       //userRepository.save(user) saves user in database and then returns this saved data to updatedUser. Here, just using user also gives the same value but it is not updated in the database.
+        UserDTO updatedUserDTO = new UserDTO(updatedUser);
+        return updatedUserDTO;
     }
+
 
     @Override
     public void deleteUser(int id) {
-
+        userRepository.deleteById(id);
     }
+    //Here, deleteById() is given by CrudRepository class which is recursively inherited by the UserRepository class.
 }

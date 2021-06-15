@@ -33,4 +33,18 @@ public class UserController {
     {
         return userService.findByID(id);
     }
+
+    @DeleteMapping("/{id}")     //Mappes input from POSTMAN i.e. instead of GET use DELETE
+    public String deleteUser(@PathVariable int id)      //takes id of user
+    {
+        userService.deleteUser((id));       //deletes user
+        return "User of id : "+ id + " deleted";
+    }
+
+    @PutMapping     //In POSTMAN same as POST where we go to body -> raw and select JSON.
+    public UserDTO updateUser(@RequestBody UserDTO userDTO)
+    {
+        return userService.updateUser(userDTO);
+    }
+    //@RequestBody requests the whole users where as @PathVariable requests data of the specified id
 }

@@ -12,3 +12,5 @@ public interface UserService {
     UserDTO updateUser(UserDTO userDTO);        //Update
     void deleteUser(int id);        //Delete
 }
+
+//What connects UserService to UserServiceImplementation such that every function used here is directed to UserServiceImplementation.

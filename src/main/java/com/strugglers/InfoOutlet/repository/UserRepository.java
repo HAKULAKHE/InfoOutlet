@@ -9,3 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Integer> {      //Integer is the wrapper class of data type of the primary key
     //If we use UserDTO it shows error.
 }
+
+//UserRepository -> JpaRepository -> PagingAndSortingRepository -> CrudRepository
