@@ -1,8 +1,8 @@
 package com.strugglers.InfoOutlet.controller;
 
-import com.strugglers.InfoOutlet.Model.User;
 import com.strugglers.InfoOutlet.dto.UserDTO;
 import com.strugglers.InfoOutlet.service.UserService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,5 +26,11 @@ public class UserController {
     public List<UserDTO> getAll()
     {
         return userService.findAll();
+    }
+
+    @GetMapping("/{id}")        //if id was not given it would show error of ambiguous mapping.
+    public UserDTO getById(@PathVariable int id)
+    {
+        return userService.findByID(id);
     }
 }

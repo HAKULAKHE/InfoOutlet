@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 //Database is connected through repository and UserDto
 
 //We need to add @Service, @RestController, @Repository or @Configuration to use @Autowired
@@ -29,7 +30,19 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDTO findByID(int id) {
-        return null;
+        Optional<User> userOptional = userRepository.findById(id);      //If there is no matching value of User in Repository i.e. database, the Optional<> sets User to null.
+        //If you don't know what statement is corrent use Alt + ctrl + v
+//        UserDTO userDTO = null;
+//        if(userOptional.isPresent())
+//        {
+//            userDTO = new UserDTO(userOptional.get());
+//        }
+//        return userDTO;
+
+        //The above and the below code do the same job
+        User user = userOptional.orElseThrow(() -> new RuntimeException("User with given ID not found."));      //orElseThrow() comes from Optional class. This is in case there is no matching value in the database so value of User is null.
+        UserDTO userDTO = new UserDTO(user);        //After we retrieve data from User, we convert it to UserDTO
+        return userDTO;     //return UserDTO value.
     }
 
     @Override
