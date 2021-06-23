@@ -1,9 +1,13 @@
 package com.strugglers.InfoOutlet.service.implementation;
 
+import com.strugglers.InfoOutlet.Model.Admin;
 import com.strugglers.InfoOutlet.Model.User;
+import com.strugglers.InfoOutlet.dto.AdminDTO;
 import com.strugglers.InfoOutlet.dto.UserDTO;
 import com.strugglers.InfoOutlet.repository.UserRepository;
+import com.strugglers.InfoOutlet.service.AdminService;
 import com.strugglers.InfoOutlet.service.UserService;
+import com.strugglers.InfoOutlet.utils.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -14,16 +18,29 @@ import java.util.Optional;
 //Database is connected through repository and UserDto
 
 //We need to add @Service, @RestController, @Repository or @Configuration to use @Autowired
-@Service
+@Service        //Database
 public class UserServiceImplementation implements UserService {
     @Autowired      //Dependency injection : To use User repository
     private UserRepository userRepository;
+
+    @Autowired
+    private AdminService adminService;
 
     @Override
     public UserDTO addUser(UserDTO userDTO) {
         User user = new User(userDTO);      //We cannot use userDtO directly as we use User in UserRepository so we convert userDTO to user.
         User savedUser = userRepository.save(user);     //Save the value in database.
         UserDTO savedUserDTO = new UserDTO(savedUser);      //Covert savedUser to UserDTO form.
+        if(userDTO.getRoles().equals(Roles.ADMIN))
+        {
+            Admin admin = new Admin();
+            admin.setUser(savedUser);
+            admin.setBranch(userDTO.getBranch());
+            admin.setPosition(userDTO.getPosition());
+            admin.setJoiningDate(userDTO.getJoiningDate());     //Should be inserted in specific formate
+            admin.setWorkingShift(userDTO.getWorkingShift());
+            adminService.addAdmin(admin);       //Isn't admin null right now?
+        }
         return savedUserDTO;        //Returning value in User Repository back to UserDTO (Copied user to userDTO).
         //This is returned to the controller
     }
@@ -73,4 +90,22 @@ public class UserServiceImplementation implements UserService {
         userRepository.deleteById(id);
     }
     //Here, deleteById() is given by CrudRepository class which is recursively inherited by the UserRepository class.
+
+
+    @Override
+    public UserDTO login(String username, String password) {
+        Optional<User> optionalUser =  userRepository.findByUsernameAndPassword(username,password);
+
+        UserDTO userDTO = null;
+        if(optionalUser.isPresent())
+        {
+            userDTO = new UserDTO(optionalUser.get());
+        }
+        return userDTO;
+
+                        //OR
+//        User user = optionalUser.orElseThrow(() -> new RuntimeException("User with given id not found"));
+//        UserDTO userDTO = new UserDTO(user);
+//        return userDTO;
+    }
 }
